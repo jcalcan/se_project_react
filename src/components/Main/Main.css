@@ -1,0 +1,44 @@
+.cards {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+}
+.cards__list {
+  list-style-type: none;
+  display: grid;
+  grid-gap: 20px 20px;
+  grid-template-columns: repeat(auto-fit, 323px);
+  grid-template-rows: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.cards__text {
+  display: flex;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24.8px;
+}
+
+@media screen and (max-width: 375px) {
+  .cards__list {
+    padding: 0;
+    grid-template-columns: repeat(2, 158px);
+    grid-gap: 16px 15px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+  }
+  .cards__text {
+    width: 100%;
+    margin: 32px 0 20px 0;
+    padding: 0;
+    white-space: nowrap;
+  }
+}

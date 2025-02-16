@@ -1,0 +1,21 @@
+.footer {
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  display: flex;
+  justify-content: space-between;
+
+  padding: 171px 0 24px 0;
+  align-items: center;
+}
+
+.footer-title {
+  display: block;
+}
+
+@media screen and (max-width: 375px) {
+  .footer {
+    padding: 83px 0 24px 0;
+  }
+}

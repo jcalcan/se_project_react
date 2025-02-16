@@ -1,0 +1,35 @@
+.weather-card {
+  position: relative;
+  display: flex;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.weather-card__temp {
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  color: white;
+  font-size: 36px;
+  line-height: 40px;
+  margin: 0;
+  position: absolute;
+  top: 20px;
+  left: 16px;
+}
+
+.weather-card__img {
+  object-fit: cover;
+  object-position: right top;
+  width: 100%;
+}
+
+@media screen and (max-width: 375px) {
+  .weather-card {
+    position: absolute;
+    top: 134px;
+    right: 16px;
+    left: 16px;
+    margin-top: 16px;
+  }
+}

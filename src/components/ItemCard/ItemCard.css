@@ -1,0 +1,30 @@
+.itemCard {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  position: relative;
+}
+
+.itemCard-title {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.itemCard-img {
+  border-radius: 20px;
+  border: solid #0000004d;
+  margin: 0;
+  padding: 0;
+  object-fit: cover;
+  height: 325px;
+  width: 100%;
+  display: block;
+}
+@media screen and (max-width: 375px) {
+  .itemCard-img {
+    height: 161px;
+  }
+}
