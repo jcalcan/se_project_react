@@ -30,7 +30,7 @@
 @media screen and (max-width: 375px) {
   .cards__list {
     padding: 0;
-    grid-template-columns: repeat(2, 158px);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 16px 15px;
     padding-bottom: 20px;
     margin: 0 auto;
