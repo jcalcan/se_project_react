@@ -1,4 +1,5 @@
 .modal {
+  visibility: hidden;
   position: fixed;
   top: 0;
   left: 0;
@@ -8,6 +9,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.modal_opened {
+  visibility: visible;
 }
 .modal__container {
   background-color: white;
@@ -30,6 +34,8 @@
 
 .modal__close {
   background-image: url("../../assets/close-btn.svg");
+  background-size: cover;
+  cursor: pointer;
   width: 20px;
   height: 20px;
   object-fit: cover;
