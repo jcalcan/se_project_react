@@ -4,12 +4,12 @@ import "./ModalWithForm.css";
 function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
   const modalFormRef = useRef(null);
 
-  const closeModal = useCallback(() => {
-    if (modalFormRef.current) {
-      modalFormRef.current.classList.remove("modal_opened");
-    }
-    onClose();
-  }, [onClose]);
+  // const closeModal = useCallback(() => {
+  //   if (modalFormRef.current) {
+  //     modalFormRef.current.classList.remove("modal_opened");
+  //   }
+  //   onClose();
+  // }, [onClose]);
 
   useEffect(() => {
     const handleClickOutsideModal = (event) => {
@@ -17,13 +17,13 @@ function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
         modalFormRef.current &&
         !modalFormRef.current.contains(event.target)
       ) {
-        closeModal();
+        onClose();
       }
     };
 
     const handleEscapePress = (event) => {
       if (event.key === "Escape") {
-        closeModal();
+        onClose();
       }
     };
 

@@ -1,6 +1,6 @@
 import { coordinates } from "./constants";
 
-export class weatherAPI {
+export class WeatherAPI {
   constructor() {
     // this._APIkey = import.meta.env.VITE_TOKEN;
     this._APIkey = "100c869ad85fcdbeb33a5d6ec14de055";

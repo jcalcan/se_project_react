@@ -6,7 +6,9 @@ import Main from "../Main/Main";
 import Footer from "../Footer/Footer";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
-import { weatherAPI } from "../../utils/weatherApi";
+import { WeatherAPI } from "../../utils/weatherApi";
+
+const weatherApi = new WeatherAPI();
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -18,7 +20,6 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
 
   useEffect(() => {
-    const weatherApi = new weatherAPI();
     weatherApi
       .getWeather()
       .then((data) => {
@@ -26,9 +27,7 @@ function App() {
 
         setWeatherData(filteredWeatherData);
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch(console.error);
   }, []);
 
   function handleCardClick(card) {
@@ -85,20 +84,37 @@ function App() {
               htmlFor="hot"
               className="modal__label modal__label_type_radio"
             >
-              <input id="hot" type="radio" className="modal__radio-input" /> Hot
+              <input
+                id="hot"
+                name="climate"
+                type="radio"
+                className="modal__radio-input"
+                checked
+              />{" "}
+              Hot
             </label>
             <label
               htmlFor="warm"
               className="modal__label modal__label_type_radio"
             >
-              <input id="warm" type="radio" className="modal__radio-input" />
+              <input
+                id="warm"
+                name="climate"
+                type="radio"
+                className="modal__radio-input"
+              />
               Warm
             </label>
             <label
               htmlFor="cold"
               className="modal__label modal__label_type_radio"
             >
-              <input id="cold" type="radio" className="modal__radio-input" />
+              <input
+                id="cold"
+                name="climate"
+                type="radio"
+                className="modal__radio-input"
+              />
               Cold
             </label>
           </fieldset>
