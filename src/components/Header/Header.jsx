@@ -1,5 +1,5 @@
 import "./Header.css";
-import logo from "../../assets/logo.svg";
+import logo from "../../assets/Logo.svg";
 import avatar from "../../assets/avatar.svg";
 import { useState } from "react";
 
