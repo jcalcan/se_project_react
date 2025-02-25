@@ -10,8 +10,9 @@ import { weatherAPI } from "../../utils/weatherApi";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
-    type: "cold",
-    temp: { F: 999, C: 999 }
+    type: "",
+    temp: { F: 999 },
+    city: ""
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
@@ -21,7 +22,9 @@ function App() {
     weatherApi
       .getWeather()
       .then((data) => {
-        console.log(data);
+        const filteredWeatherData = weatherApi.filterWeatherData(data);
+
+        setWeatherData(filteredWeatherData);
       })
       .catch((error) => {
         console.error(error);
@@ -44,7 +47,7 @@ function App() {
   return (
     <div className="page">
       <div className="page__content">
-        <Header handleAddClick={handleAddClick} />
+        <Header handleAddClick={handleAddClick} weatherData={weatherData} />
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
         <ModalWithForm
           title="New garment"

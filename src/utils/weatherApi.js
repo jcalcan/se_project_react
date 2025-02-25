@@ -28,4 +28,23 @@ export class weatherAPI {
     }
     return Promise.reject(`Error: ${res.status}`);
   }
+
+  filterWeatherData(data) {
+    const result = {};
+    result.city = data.name;
+    result.temp = { F: data.main.temp };
+    result.type = this.getWeatherType(result.temp.F);
+
+    return result;
+  }
+
+  getWeatherType(temperature) {
+    if (temperature > 86) {
+      return "hot";
+    } else if (temperature >= 66 && temperature < 86) {
+      return "warm";
+    } else {
+      return "cold";
+    }
+  }
 }

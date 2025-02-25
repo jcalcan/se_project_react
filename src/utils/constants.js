@@ -38,6 +38,6 @@ export const defaultClothingItems = [
 ];
 
 export const coordinates = {
-  longtitude: 41.878,
-  latitude: 87.6298
+  longtitude: -82.5712,
+  latitude: 27.4954
 };
