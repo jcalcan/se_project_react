@@ -26,3 +26,8 @@ jobs:
         with:
           branch: gh-pages
           folder: dist
+      - name: Debug environment variables
+        run: printenv | grep VITE_
+        env: 
+          VITE_TOKEN: ${{ secrets.VITE_TOKEN }}
+
