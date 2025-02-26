@@ -89,7 +89,6 @@ function App() {
                 name="climate"
                 type="radio"
                 className="modal__radio-input"
-                checked
               />{" "}
               Hot
             </label>
