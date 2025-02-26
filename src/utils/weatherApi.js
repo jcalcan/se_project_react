@@ -2,8 +2,7 @@ import { coordinates } from "./constants";
 
 export class WeatherAPI {
   constructor() {
-    // this._APIkey = import.meta.env.VITE_TOKEN;
-    this._APIkey = "100c869ad85fcdbeb33a5d6ec14de055";
+    this._APIkey = import.meta.env.VITE_TOKEN;
     this._baseUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${coordinates.latitude}&lon=${coordinates.longtitude}&units=imperial&appid=${this._APIkey}`;
     this._headers = {
       authorization: this._APIkey,
