@@ -2,13 +2,11 @@ import { useRef } from "react";
 import "./ItemModal.css";
 import useModalClose from "../../utils/closeModalHook";
 
-function ItemModal({ activeModal, onClose, card }) {
-  const modalImgRef = useRef(null);
-  const isOpen = activeModal === "preview";
+function ItemModal({ isOpen, onClose, card }) {
   useModalClose(isOpen, onClose);
 
   return (
-    <div className={`modal ${isOpen ? "modal_opened" : ""}`} ref={modalImgRef}>
+    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content modal__content_type_image">
         <button
           type="button"
