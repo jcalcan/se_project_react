@@ -18,6 +18,7 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [tempValue, setTempValue] = useState(false);
 
   useEffect(() => {
     weatherApi
@@ -43,10 +44,21 @@ function App() {
     setActiveModal("");
   }
 
+  function handleToggle() {
+    setTempValue(!tempValue);
+    console.log(tempValue);
+  }
+
   return (
     <div className="page">
       <div className="page__content">
-        <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+        <Header
+          handleAddClick={handleAddClick}
+          weatherData={weatherData}
+          isOn={tempValue}
+          handleToggle={handleToggle}
+          onColor={"#fff"}
+        />
         <Main weatherData={weatherData} handleCardClick={handleCardClick} />
         <ModalWithForm
           title="New garment"

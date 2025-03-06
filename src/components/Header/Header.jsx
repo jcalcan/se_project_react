@@ -2,8 +2,9 @@ import "./Header.css";
 import logo from "../../assets/Logo.svg";
 import avatar from "../../assets/avatar.svg";
 import { useState } from "react";
+import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 
-function Header({ handleAddClick, weatherData }) {
+function Header({ handleAddClick, weatherData, isOn, handleToggle, onColor }) {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric"
@@ -15,6 +16,7 @@ function Header({ handleAddClick, weatherData }) {
       <p className="header__date-and-location">
         {currentDate}, {weatherData.city}
       </p>
+      <ToggleSwitch isOn={isOn} handleToggle={handleToggle} onColor={onColor} />
       <button
         type="button"
         className="header__add-clothes-btn"
