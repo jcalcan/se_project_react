@@ -1,8 +1,11 @@
+import avatar from "../../assets/avatar.svg";
+import "./SideBar.css";
+
 function SideBar() {
   return (
     <div className="sidebar">
-      <section className="profile__sidebar"></section>
-      <section className="profile__clothing-items"></section>
+      <img className="sidebar__avatar" src={avatar} alt="Default avatar" />
+      <p className="sidebar__username">Terrence Tegegne</p>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import "./ItemModal.css";
 import useModalClose from "../../utils/closeModalHook";
 
-function ItemModal({ isOpen, onClose, card }) {
+function ItemModal({ isOpen, onClose, card, onDelete }) {
   useModalClose(isOpen, onClose);
 
   return (
@@ -17,6 +17,13 @@ function ItemModal({ isOpen, onClose, card }) {
         <div className="modal__footer">
           <h2 className="modal__caption">{card.name}</h2>
           <p className="modal__weather">Weather: {card.weather}</p>
+          <button
+            type="button"
+            className="modal__delete-btn"
+            onClick={onDelete}
+          >
+            Delete Item
+          </button>
         </div>
       </div>
     </div>

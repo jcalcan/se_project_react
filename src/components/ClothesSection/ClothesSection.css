@@ -1,0 +1,44 @@
+.clothes-items-menu {
+  display: flex;
+  gap: 20px;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  color: #000000;
+}
+
+.clothes-items-menu_btn {
+  border: none;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  opacity: 60%;
+  color: #00000099;
+}
+.clothes-section__list {
+  list-style-type: none;
+  display: grid;
+  grid-gap: 20px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(323px, 1fr));
+
+  grid-template-rows: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+  max-width: 100%;
+}
+
+@media screen and (max-width: 375px) {
+  .profile__cards__list {
+    padding: 0;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 16px 15px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+  }
+}

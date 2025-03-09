@@ -17,9 +17,9 @@
 }
 
 .modal__close_type_image {
-  background-image: url("../../assets/close-btn2.svg");
-  background-color: transparent;
-
+  background-image: url("../../assets/close-btn.svg");
+  /* background-color: transparent; */
+  color: #0000004d;
   border: none;
   top: 24px;
   right: 24px;
@@ -32,4 +32,18 @@
   margin-top: 20px;
   margin-left: 32px;
   margin-bottom: 32px;
+}
+
+.modal__delete-btn {
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  border: none;
+  color: #ff4d00;
+  background-color: white;
+  position: absolute;
+  top: 518px;
+  left: 365px;
+  cursor: pointer;
 }

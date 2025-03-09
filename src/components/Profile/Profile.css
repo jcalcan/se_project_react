@@ -1,0 +1,19 @@
+.profile {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.profile__sidebar {
+  margin-right: 116px;
+  padding: 0;
+}
+
+.profile__clothing-items {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+}

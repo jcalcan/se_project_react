@@ -11,6 +11,7 @@ import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperature
 import Profile from "../Profile/Profile";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import { defaultClothingItems } from "../../utils/constants";
+import ItemModalDeleteConfirmation from "../ItemModalDeleteConfirmation/ItemModalDeleteConfirmation";
 
 const weatherApi = new WeatherAPI();
 
@@ -25,7 +26,6 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
 
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-  console.log(currentTemperatureUnit);
 
   useEffect(() => {
     weatherApi
@@ -47,12 +47,27 @@ function App() {
     setActiveModal("add-garment");
   }
 
+  function handleDeleteCardConfirmation() {
+    console.log(`delete button clicked`);
+
+    setActiveModal("confirm-delete");
+  }
+
+  function handleDeleteCard() {
+    console.log(`delete confirmed button clicked`);
+    setClothingItems(
+      clothingItems.filter((item) => {
+        return item._id !== selectedCard._id;
+      })
+    );
+    closeActiveModal();
+  }
+
   function closeActiveModal() {
     setActiveModal("");
   }
 
   function handleToggleSwitchChange() {
-    console.log(currentTemperatureUnit);
     currentTemperatureUnit === "F"
       ? setCurrentTemperatureUnit("C")
       : setCurrentTemperatureUnit("F");
@@ -61,12 +76,10 @@ function App() {
   function handleAddItemModalSubmit({ name, garmentUrl, tempButton }) {
     const newId = Math.max(...clothingItems.map((item) => item._id)) + 1;
     //update clothing array
-    setClothingItems((prevItems) => {
-      [
-        { name, link: garmentUrl, weather: tempButton, _id: newId },
-        ...prevItems
-      ];
-    });
+    setClothingItems((prevItems) => [
+      { name, link: garmentUrl, weather: tempButton, _id: newId },
+      ...prevItems
+    ]);
     //close the modal
     closeActiveModal();
   }
@@ -98,7 +111,15 @@ function App() {
                   />
                 }
               />
-              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/profile"
+                element={
+                  <Profile
+                    onCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                  />
+                }
+              />
             </Routes>
 
             <AddItemModal
@@ -110,6 +131,12 @@ function App() {
               isOpen={activeModal === "preview"}
               card={selectedCard}
               onClose={closeActiveModal}
+              onDelete={handleDeleteCardConfirmation}
+            />
+            <ItemModalDeleteConfirmation
+              isOpen={activeModal === "confirm-delete"}
+              onClose={closeActiveModal}
+              onHandleDeleteCard={handleDeleteCard}
             />
 
             <Footer />

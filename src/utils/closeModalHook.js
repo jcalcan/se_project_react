@@ -2,7 +2,10 @@ import { useEffect } from "react";
 
 function useModalClose(isOpen, onClose) {
   useEffect(() => {
-    if (!isOpen) return;
+    if (typeof onClose !== "function") {
+      console.warn("useModalClose: Invalid props", { isOpen, onClose });
+      return;
+    }
 
     const handleEscape = (e) => {
       if (e.key === "Escape") {
@@ -23,7 +26,7 @@ function useModalClose(isOpen, onClose) {
       document.removeEventListener("keydown", handleEscape);
       document.removeEventListener("mousedown", handleOverlay);
     };
-  }, [isOpen, onClose]); // watch isOpen to add the listeners only when the modal is open
+  }, [isOpen, onClose]);
 }
 
 export default useModalClose;
