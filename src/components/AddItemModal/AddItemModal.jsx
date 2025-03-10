@@ -1,6 +1,6 @@
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AddItemModal({
   onClose,
@@ -23,13 +23,15 @@ export default function AddItemModal({
     setTempButton(e.target.value);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    onAddItemModalSubmit({ name, garmentUrl, tempButton });
-    //empty the inputs
+  function resetForm() {
     setName("");
     setGarmentUrl("");
     setTempButton("");
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onAddItemModalSubmit({ name, garmentUrl, tempButton }, resetForm);
   }
 
   return (

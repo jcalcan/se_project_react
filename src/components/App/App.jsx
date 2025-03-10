@@ -62,13 +62,16 @@ function App() {
     jsonServerApi
       .deleteItem(selectedCard._id)
       .then(() => {
-        jsonServerApi.getItems().then((updatedItems) => {
-          setClothingItems(updatedItems);
-        });
+        setClothingItems(
+          clothingItems.filter((item) => {
+            return item._id !== selectedCard._id;
+          })
+        );
+      })
+      .then(() => {
+        closeActiveModal();
       })
       .catch(console.error);
-
-    closeActiveModal();
   }
 
   function closeActiveModal() {
@@ -81,23 +84,26 @@ function App() {
       : setCurrentTemperatureUnit("F");
   }
 
-  function handleAddItemModalSubmit({ name, garmentUrl, tempButton }) {
-    const newId = Math.max(...clothingItems.map((item) => item._id)) + 1;
-
+  function handleAddItemModalSubmit(
+    { name, garmentUrl, tempButton },
+    resetForm
+  ) {
     jsonServerApi
       .postItems({
         name: name,
         imageUrl: garmentUrl,
         weather: tempButton
       })
+      .then((data) => {
+        setClothingItems([data, ...clothingItems]);
+      })
       .then(() => {
-        jsonServerApi.getItems().then((updatedItems) => {
-          setClothingItems(updatedItems);
-        });
+        closeActiveModal();
+      })
+      .then(() => {
+        resetForm();
       })
       .catch(console.error);
-    //close the modal
-    closeActiveModal();
   }
 
   return (
@@ -133,6 +139,7 @@ function App() {
                   <Profile
                     onCardClick={handleCardClick}
                     clothingItems={clothingItems}
+                    handleAddClick={handleAddClick}
                   />
                 }
               />
