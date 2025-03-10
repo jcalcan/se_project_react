@@ -2,11 +2,6 @@ import { useEffect } from "react";
 
 function useModalClose(isOpen, onClose) {
   useEffect(() => {
-    if (typeof onClose !== "function") {
-      console.warn("useModalClose: Invalid props", { isOpen, onClose });
-      return;
-    }
-
     const handleEscape = (e) => {
       if (e.key === "Escape") {
         onClose();

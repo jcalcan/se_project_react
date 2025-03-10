@@ -10,10 +10,12 @@ import { WeatherAPI } from "../../utils/weatherApi";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 import Profile from "../Profile/Profile";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import { defaultClothingItems } from "../../utils/constants";
+
 import ItemModalDeleteConfirmation from "../ItemModalDeleteConfirmation/ItemModalDeleteConfirmation";
+import { JsonAPI } from "../../utils/api";
 
 const weatherApi = new WeatherAPI();
+const jsonServerApi = new JsonAPI();
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -21,11 +23,16 @@ function App() {
     temp: { F: 999, C: 999 },
     city: ""
   });
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+
+  const [clothingItems, setClothingItems] = useState([]);
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
 
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  useEffect(() => {
+    jsonServerApi.getItems().then(setClothingItems).catch(console.error);
+  }, []);
 
   useEffect(() => {
     weatherApi
@@ -48,18 +55,19 @@ function App() {
   }
 
   function handleDeleteCardConfirmation() {
-    console.log(`delete button clicked`);
-
     setActiveModal("confirm-delete");
   }
 
   function handleDeleteCard() {
-    console.log(`delete confirmed button clicked`);
-    setClothingItems(
-      clothingItems.filter((item) => {
-        return item._id !== selectedCard._id;
+    jsonServerApi
+      .deleteItem(selectedCard._id)
+      .then(() => {
+        jsonServerApi.getItems().then((updatedItems) => {
+          setClothingItems(updatedItems);
+        });
       })
-    );
+      .catch(console.error);
+
     closeActiveModal();
   }
 
@@ -75,11 +83,19 @@ function App() {
 
   function handleAddItemModalSubmit({ name, garmentUrl, tempButton }) {
     const newId = Math.max(...clothingItems.map((item) => item._id)) + 1;
-    //update clothing array
-    setClothingItems((prevItems) => [
-      { name, link: garmentUrl, weather: tempButton, _id: newId },
-      ...prevItems
-    ]);
+
+    jsonServerApi
+      .postItems({
+        name: name,
+        imageUrl: garmentUrl,
+        weather: tempButton
+      })
+      .then(() => {
+        jsonServerApi.getItems().then((updatedItems) => {
+          setClothingItems(updatedItems);
+        });
+      })
+      .catch(console.error);
     //close the modal
     closeActiveModal();
   }
