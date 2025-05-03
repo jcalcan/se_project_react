@@ -6,10 +6,12 @@ import PropTypes from "prop-types";
 function ModalWithForm({
   children,
   buttonText,
+  buttonWidthStyle,
   title,
   isOpen,
   onClose,
-  onSubmit
+  onSubmit,
+  alternativeAction
 }) {
   useModalClose(isOpen, onClose);
 
@@ -21,9 +23,16 @@ function ModalWithForm({
           <button type="button" className="modal__close" onClick={onClose} />
 
           {children}
-          <button type="submit" className="modal__submit-btn">
-            {buttonText}
-          </button>
+          <div className="modal__button-container">
+            <button
+              type="submit"
+              className="modal__submit-btn"
+              style={buttonWidthStyle}
+            >
+              {buttonText}
+            </button>
+            {alternativeAction}
+          </div>
         </form>
       </div>
     </div>

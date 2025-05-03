@@ -42,6 +42,25 @@
   color: black;
 }
 
+.header__signup-btn {
+  cursor: pointer;
+  margin: 0 20px 0 20px;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  border: none;
+}
+.header__login-btn {
+  cursor: pointer;
+  margin: 0 20px 0 20px;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
+  border: none;
+}
+
 @media screen and (max-width: 375px) {
   .header {
     display: flex;

@@ -9,6 +9,7 @@ https://jcalcan.github.io/se_project_react/
 - Tech used
 - Description and functionality
 - Github link
+- Backend Express server
 - Images
 
 **Intro**
@@ -28,6 +29,9 @@ WTWW is a site that provides suggestions based on the local weather conditions. 
 
 **Github link**
 https://jcalcan.github.io/se_project_react/
+
+**Express Server Link**
+[WTWR backend Server](https://github.com/jcalcan/se_project_express/)
 
 **Images and screenshots**
 Photo showcase of the design of the site in different dimensions for various devices. For example,

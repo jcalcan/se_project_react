@@ -6,7 +6,13 @@ import { useState, useContext } from "react";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
 
-function Header({ handleAddClick, weatherData, onColor }) {
+function Header({
+  handleLoginClick,
+  handleSignupClick,
+  handleAddClick,
+  weatherData,
+  onColor
+}) {
   const tempUnit = useContext(CurrentTemperatureUnitContext);
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
@@ -23,6 +29,23 @@ function Header({ handleAddClick, weatherData, onColor }) {
         {currentDate}, {weatherData.city}
       </p>
       <ToggleSwitch isOn={tempUnit.isOn} onColor={onColor} />
+
+      <button
+        type="button"
+        className="header__signup-btn"
+        onClick={handleSignupClick}
+      >
+        Sign Up
+      </button>
+
+      <button
+        type="button"
+        className="header__login-btn"
+        onClick={handleLoginClick}
+      >
+        Login
+      </button>
+
       <button
         type="button"
         className="header__add-clothes-btn"
@@ -30,6 +53,7 @@ function Header({ handleAddClick, weatherData, onColor }) {
       >
         + Add clothes
       </button>
+
       <Link to="/profile">
         <div className="header__user-container">
           <p className="header__username">Terrence Tegegne</p>
