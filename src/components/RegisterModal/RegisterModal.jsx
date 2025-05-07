@@ -1,9 +1,14 @@
-import { Link } from "react-router-dom";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./RegisterModal.css";
 
-export default function RegisterModal({ onClose, isOpen, handleRegistration }) {
+export default function RegisterModal({
+  onClose,
+  isOpen,
+  handleRegistration,
+  handleModalSwitch
+}) {
+  const emailInputRef = useRef(null);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -88,6 +93,24 @@ export default function RegisterModal({ onClose, isOpen, handleRegistration }) {
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      emailInputRef.current?.focus();
+      setData({
+        email: "",
+        password: "",
+        name: "",
+        avatar: ""
+      });
+
+      setServerError("");
+      setEmailError(false);
+      setPasswordError(false);
+      setNameError(false);
+      setAvatarError(false);
+    }
+  }, [isOpen]);
+
   return (
     <ModalWithForm
       title="Sign Up"
@@ -97,15 +120,21 @@ export default function RegisterModal({ onClose, isOpen, handleRegistration }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       alternativeAction={
-        <Link to="login" className="modal__login-link">
+        <button
+          type="button"
+          to="login"
+          className="modal__alternateAction-link"
+          onClick={handleModalSwitch}
+        >
           or Log In
-        </Link>
+        </button>
       }
     >
       <label htmlFor="signup-email-input" className="modal__label">
         Email*
       </label>
       <input
+        ref={emailInputRef}
         id="signup-email-input"
         type="email"
         className={`modal__input ${emailError ? "modal__input_error" : ""}`}

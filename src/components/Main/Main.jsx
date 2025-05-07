@@ -2,18 +2,17 @@ import { useContext } from "react";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
 import "./Main.css";
-import { CurrentTemperatureUnitContext } from "../../contexts/CurrentTemperatureUnitContext";
+import AppContext from "../../contexts/AppContext";
 
-function Main({ weatherData, handleCardClick, clothingItems }) {
-  const tempUnit = useContext(CurrentTemperatureUnitContext);
-
+function Main({ weatherData, handleCardClick, clothingItems, handleCardLike }) {
+  const { currentTemperatureUnit, isOn } = useContext(AppContext);
   return (
     <main>
       <WeatherCard weatherData={weatherData} />
       <section className="cards">
         <p className="cards__text">
-          Today is {tempUnit.isOn ? weatherData.temp.C : weatherData.temp.F}
-          &deg; {tempUnit.currentTemperatureUnit} / You want to wear:
+          Today is {isOn ? weatherData.temp.C : weatherData.temp.F}
+          &deg; {currentTemperatureUnit} / You want to wear:
         </p>
 
         <ul className="cards__list">
@@ -27,6 +26,7 @@ function Main({ weatherData, handleCardClick, clothingItems }) {
                   key={item._id}
                   item={item}
                   onCardClick={handleCardClick}
+                  handleCardLike={handleCardLike}
                 />
               );
             })}

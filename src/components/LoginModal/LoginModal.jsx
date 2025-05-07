@@ -1,9 +1,15 @@
-import { Link } from "react-router-dom";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./LoginModal.css";
 
-export default function LoginModal({ onClose, isOpen, handleLogin }) {
+export default function LoginModal({
+  onClose,
+  isOpen,
+  handleLogin,
+  handleModalSwitch,
+  errorMessage
+}) {
+  const emailInputRef = useRef(null);
   const [currentUser, setCurrentUser] = useState({
     email: "",
     password: ""
@@ -47,6 +53,19 @@ export default function LoginModal({ onClose, isOpen, handleLogin }) {
     }
     if (!hasErrors) handleLogin(currentUser);
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      emailInputRef.current?.focus();
+      setCurrentUser({
+        email: "",
+        password: ""
+      });
+      setEmailError(false);
+      setPasswordError(false);
+    }
+  }, [isOpen]);
+
   return (
     <ModalWithForm
       title="Login"
@@ -56,15 +75,21 @@ export default function LoginModal({ onClose, isOpen, handleLogin }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       alternativeAction={
-        <Link to="signup" className="modal__login-link">
+        <button
+          type="button"
+          to="signup"
+          className="modal__alternateAction-link"
+          onClick={handleModalSwitch}
+        >
           or Sign Up
-        </Link>
+        </button>
       }
     >
       <label htmlFor="login-email-input" className="modal__label">
         Email*
       </label>
       <input
+        ref={emailInputRef}
         id="login-email-input"
         type="email"
         className={`modal__input ${emailError ? "modal__input_error" : ""}`}
@@ -97,6 +122,9 @@ export default function LoginModal({ onClose, isOpen, handleLogin }) {
         <span className="modal__error-message">
           Password must be at least 6 characters long
         </span>
+      )}
+      {errorMessage && (
+        <span className="modal__error-message">{errorMessage}</span>
       )}
     </ModalWithForm>
   );

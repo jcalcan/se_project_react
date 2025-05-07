@@ -13,8 +13,8 @@ export class JsonAPI {
         ...(options.headers || {})
       }
     };
-    console.log("Making request to:", endpoint); // Add this
-    console.log("With options:", finalOptions); // Add this
+    // console.log("Making request to:", endpoint);
+    // console.log("With options:", finalOptions);
 
     return fetch(endpoint, finalOptions).then(this._checkResponse);
   }
@@ -25,16 +25,24 @@ export class JsonAPI {
     );
   }
 
-  postItems(data) {
+  postItems(data, token) {
     return this._request(`${this._baseUrl}items`, {
       method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      },
       body: JSON.stringify(data)
     });
   }
 
-  deleteItem(id) {
+  deleteItem(id, token) {
     return this._request(`${this._baseUrl}items/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      }
     });
   }
 
@@ -51,7 +59,7 @@ export class JsonAPI {
   }
 
   createUser(data) {
-    console.log("Creating user with data:", data);
+    // console.log("Creating user with data:", data);
     return this._request(`${this._baseUrl}signup`, {
       method: "POST",
       body: JSON.stringify(data)
@@ -69,11 +77,38 @@ export class JsonAPI {
   }
 
   authorize(data) {
-    console.log("Authorizing with data:", data);
+    // console.log("Authorizing with data:", data);
     return this._request(`${this._baseUrl}signin`, {
       method: "POST",
       headers: { Accept: "application/json" },
       body: JSON.stringify(data)
+    });
+  }
+  updateUserInfo(data, token) {
+    return this._request(`${this._baseUrl}users/me`, {
+      method: "PATCH",
+      headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify(data)
+    });
+  }
+
+  addCardLike(id, token) {
+    return this._request(`${this._baseUrl}items/${id}/likes`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  removeCardLike(id, token) {
+    return this._request(`${this._baseUrl}items/${id}/likes`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      }
     });
   }
 }

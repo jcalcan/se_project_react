@@ -17,3 +17,12 @@
   box-sizing: border-box;
   width: 100%;
 }
+.profile__error-message {
+  color: #ff4d4d;
+  background-color: #ffebeb;
+  padding: 12px;
+  margin: 0 0 20px 0;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+}

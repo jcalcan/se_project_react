@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import "./ItemModalDeleteConfirmation.css";
 import useModalClose from "../../utils/closeModalHook";
 

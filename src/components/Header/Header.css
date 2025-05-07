@@ -53,7 +53,7 @@
 }
 .header__login-btn {
   cursor: pointer;
-  margin: 0 20px 0 20px;
+  margin: 0 20px 0 0px;
   font-family: CabinetGrotesk, sans-serif;
   font-weight: 700;
   font-size: 20px;
@@ -61,6 +61,33 @@
   border: none;
 }
 
+.header__logout-btn {
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  border: none;
+  background: none;
+  color: #000;
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.header__logout-btn:hover {
+  opacity: 0.6;
+}
+.header__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  color: white;
+  font-family: CabinetGrotesk, sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+}
 @media screen and (max-width: 375px) {
   .header {
     display: flex;
