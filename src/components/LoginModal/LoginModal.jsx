@@ -17,6 +17,7 @@ export default function LoginModal({
 
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [isValid, setIsValid] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,37 +25,46 @@ export default function LoginModal({
       ...prevData,
       [name]: value
     }));
+    setTimeout(validateForm, 0);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setEmailError(false);
-    setPasswordError(false);
-
-    let hasErrors = false;
-
-    const isValidEmail = (email) => {
-      return email.includes("@") && email.includes(".");
-    };
-
-    const isValidPassword = (password) => {
-      return password.length >= 6;
-    };
+  const validateForm = () => {
+    let formIsValid = true;
 
     if (!isValidEmail(currentUser.email)) {
       setEmailError(true);
-      hasErrors = true;
+      formIsValid = false;
+    } else {
+      setEmailError(false);
     }
 
     if (!isValidPassword(currentUser.password)) {
       setPasswordError(true);
-      hasErrors = true;
+      formIsValid = false;
+    } else {
+      setPasswordError(false);
     }
-    if (!hasErrors) handleLogin(currentUser);
+
+    setIsValid(formIsValid);
+  };
+
+  const isValidEmail = (email) => {
+    return email.includes("@") && email.includes(".");
+  };
+
+  const isValidPassword = (password) => {
+    return password.length >= 6;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValid) {
+      handleLogin(currentUser);
+    }
   };
 
   useEffect(() => {
+    validateForm();
     if (isOpen) {
       emailInputRef.current?.focus();
       setCurrentUser({
@@ -63,6 +73,7 @@ export default function LoginModal({
       });
       setEmailError(false);
       setPasswordError(false);
+      setIsValid(false);
     }
   }, [isOpen]);
 
@@ -84,6 +95,7 @@ export default function LoginModal({
           or Sign Up
         </button>
       }
+      isValid={isValid}
     >
       <label htmlFor="login-email-input" className="modal__label">
         Email*

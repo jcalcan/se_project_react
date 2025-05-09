@@ -133,3 +133,13 @@
   font-family: CabinetGrotesk, sans-serif;
   line-height: 20px;
 }
+
+.modal__submit-btn:disabled {
+  background-color: #0000004d;
+  opacity: 30%;
+  cursor: not-allowed;
+}
+
+.modal__submit-btn:not(:disabled) {
+  background-color: #000000;
+}

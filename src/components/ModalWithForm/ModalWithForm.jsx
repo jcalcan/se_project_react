@@ -9,7 +9,8 @@ function ModalWithForm({
   isOpen,
   onClose,
   onSubmit,
-  alternativeAction
+  alternativeAction,
+  isValid
 }) {
   useModalClose(isOpen, onClose);
 
@@ -25,6 +26,7 @@ function ModalWithForm({
             <button
               type="submit"
               className="modal__submit-btn"
+              disabled={!isValid}
               style={buttonWidthStyle}
             >
               {buttonText}

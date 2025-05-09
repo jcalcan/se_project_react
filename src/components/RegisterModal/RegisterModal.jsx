@@ -21,6 +21,7 @@ export default function RegisterModal({
   const [passwordError, setPasswordError] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
   const [serverError, setServerError] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,72 +29,69 @@ export default function RegisterModal({
       ...prevData,
       [name]: value
     }));
+    setTimeout(validateForm, 0);
+  };
+
+  const isValidEmail = (email) => {
+    return email.includes("@") && email.includes(".");
+  };
+
+  const isValidName = (name) => {
+    return name.length > 3;
+  };
+
+  const isValidPassword = (password) => {
+    return password.length >= 6;
+  };
+
+  const isValidURL = (avatar) => {
+    const urlRegex = /^https?:\/\/\S+$/i;
+    return urlRegex.test(avatar);
+  };
+
+  const validateForm = () => {
+    let formIsValid = true;
+
+    if (!isValidEmail(data.email)) {
+      setEmailError(true);
+      formIsValid = false;
+    } else {
+      setEmailError(false);
+    }
+
+    if (!isValidPassword(data.password)) {
+      setPasswordError(true);
+      formIsValid = false;
+    } else {
+      setPasswordError(false);
+    }
+
+    if (!isValidName(data.name)) {
+      setNameError(true);
+      formIsValid = false;
+    } else {
+      setNameError(false);
+    }
+
+    if (!isValidURL(data.avatar)) {
+      setAvatarError(true);
+      formIsValid = false;
+    } else {
+      setAvatarError(false);
+    }
+
+    setIsValid(formIsValid);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setServerError("");
-    setEmailError(false);
-    setPasswordError(false);
-    setNameError(false);
-    setAvatarError(false);
-
-    let hasErrors = false;
-
-    const isValidEmail = (email) => {
-      return email.includes("@") && email.includes(".");
-    };
-
-    const isValidName = (name) => {
-      return name.length > 3;
-    };
-
-    const isValidPassword = (password) => {
-      return password.length >= 6;
-    };
-
-    const isValidURL = (avatar) => {
-      const urlRegex = /^https?:\/\/\S+$/i;
-      return urlRegex.test(avatar);
-    };
-
-    if (!isValidEmail(data.email)) {
-      setEmailError(true);
-      hasErrors = true;
-    }
-    if (!isValidName(data.name)) {
-      setNameError(true);
-      hasErrors = true;
-    }
-    if (!isValidPassword(data.password)) {
-      setPasswordError(true);
-      hasErrors = true;
-    }
-    if (!isValidURL(data.avatar)) {
-      setAvatarError(true);
-      hasErrors = true;
-    }
-
-    if (!hasErrors) {
-      console.log("Registration data:", data);
-      handleRegistration({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        avatar: data.avatar
-      })
-        .then(() => {
-          console.log("Registration successful");
-          onClose();
-        })
-        .catch((error) => {
-          setServerError(error);
-        });
+    if (isValid) {
+      handleRegistration(data);
     }
   };
 
   useEffect(() => {
+    validateForm();
     if (isOpen) {
       emailInputRef.current?.focus();
       setData({
@@ -103,6 +101,7 @@ export default function RegisterModal({
         avatar: ""
       });
 
+      setIsValid(false);
       setServerError("");
       setEmailError(false);
       setPasswordError(false);
@@ -129,6 +128,7 @@ export default function RegisterModal({
           or Log In
         </button>
       }
+      isValid={isValid}
     >
       <label htmlFor="signup-email-input" className="modal__label">
         Email*
