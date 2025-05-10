@@ -301,6 +301,21 @@ function App() {
           .catch((err) => console.log(err));
   };
 
+  const handleValidation = (data) => {
+    const urlRegex = /^https?:\/\/\S+$/i;
+    const errors = {};
+
+    if (data.name.length < 3) {
+      errors.name = "Username must be larger than 3";
+    }
+
+    if (!urlRegex.test(data.avatar)) {
+      errors.avatar = "Avatar must be a valid URL";
+    }
+
+    return Object.keys(errors).length === 0 ? true : errors;
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -311,7 +326,8 @@ function App() {
         currentUser,
         handleLogout,
         isOn: currentTemperatureUnit === "C",
-        handleUpdateProfile
+        handleUpdateProfile,
+        handleValidation
       }}
     >
       <div className="page">

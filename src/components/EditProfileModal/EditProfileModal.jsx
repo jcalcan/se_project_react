@@ -4,18 +4,32 @@ import AppContext from "../../contexts/AppContext";
 import "./EditProfileModal.css";
 
 export default function EditProfileModal({ onClose, isOpen }) {
-  const { currentUser, handleUpdateProfile } = useContext(AppContext);
+  const [isValid, setIsValid] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
+  const { currentUser, handleUpdateProfile, handleValidation } =
+    useContext(AppContext);
   const [currentUserInfo, setCurrentUserInfo] = useState({
-    username: "",
-    avatar: ""
+    name: null,
+    avatar: null
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCurrentUserInfo((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
+    setCurrentUserInfo((prevData) => {
+      const newData = {
+        ...prevData,
+        [name]: value
+      };
+      const validationResult = handleValidation(newData);
+      if (validationResult === true) {
+        setIsValid(true);
+        setValidationErrors({});
+      } else {
+        setIsValid(false);
+        setValidationErrors(validationResult);
+      }
+      return newData;
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -30,10 +44,20 @@ export default function EditProfileModal({ onClose, isOpen }) {
 
   useEffect(() => {
     if (currentUser?.username && currentUser?.avatar) {
-      setCurrentUserInfo({
-        username: currentUser.username,
+      const newUserInfo = {
+        name: currentUser.username,
         avatar: currentUser.avatar
-      });
+      };
+      setCurrentUserInfo(newUserInfo);
+
+      const validationResult = handleValidation(newUserInfo);
+      if (validationResult === true) {
+        setIsValid(true);
+        setValidationErrors({});
+      } else {
+        setIsValid(false);
+        setValidationErrors(validationResult);
+      }
     }
   }, [currentUser]);
 
@@ -45,6 +69,7 @@ export default function EditProfileModal({ onClose, isOpen }) {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     >
       <label htmlFor="change-name-input" className="modal__label">
         Name*
@@ -53,13 +78,15 @@ export default function EditProfileModal({ onClose, isOpen }) {
         id="change-name-input"
         type="text"
         className={`modal__input`}
-        name="username"
-        placeholder={currentUserInfo.username}
+        name="name"
+        // placeholder={currentUserInfo.username}
         required
         onChange={handleChange}
-        value={currentUserInfo.username}
+        value={currentUserInfo.name || ""}
       />
-
+      {validationErrors.name && (
+        <span className="modal__input_error">{validationErrors.name}</span>
+      )}
       <label htmlFor="change-avatar-input" className="modal__label">
         Avatar URL*
       </label>
@@ -68,11 +95,14 @@ export default function EditProfileModal({ onClose, isOpen }) {
         name="avatar"
         type="url"
         className={`modal__input`}
-        placeholder={currentUserInfo.avatar}
-        value={currentUserInfo.avatar}
+        // placeholder={currentUserInfo.avatar}
+        value={currentUserInfo.avatar || ""}
         required
         onChange={handleChange}
       />
+      {validationErrors.avatar && (
+        <span className="modal__input_error">{validationErrors.avatar}</span>
+      )}
     </ModalWithForm>
   );
 }
