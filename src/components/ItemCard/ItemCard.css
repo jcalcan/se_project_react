@@ -4,6 +4,8 @@
   margin: 0;
   position: relative;
   align-items: center;
+  width: 325px; /* add this */
+  min-width: 325px; /* add this */
 }
 .itemCard__title-heart-container {
   display: flex;
@@ -33,7 +35,7 @@
   padding: 0;
   object-fit: cover;
   height: 325px;
-  width: 100%;
+  width: 325px;
   display: block;
 }
 
@@ -68,8 +70,13 @@
   opacity: 0.5;
 }
 @media screen and (max-width: 375px) {
+  .itemCard {
+    width: 100%;
+    max-width: 100%;
+  }
   .itemCard-img {
     height: 161px;
+    width: 100%; /* add this */
   }
   .itemCard-title {
     top: 7px;
