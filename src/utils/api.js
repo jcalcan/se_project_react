@@ -1,6 +1,9 @@
 export class JsonAPI {
   constructor() {
-    this._baseUrl = `http://localhost:3001/`;
+    this._baseUrl =
+      process.env.NODE_ENV === "production"
+        ? "https://api.whattowear.mine.bz/"
+        : "http://localhost:3001/";
     this._headers = {
       "Content-Type": "application/json"
     };

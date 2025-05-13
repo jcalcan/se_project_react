@@ -1,0 +1,9 @@
+.modal__error {
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.modal__input_type_error {
+  border: 1px solid #ff4d4d;
+}

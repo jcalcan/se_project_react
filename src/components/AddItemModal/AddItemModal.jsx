@@ -1,6 +1,6 @@
 import "./AddItemModal.css";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function AddItemModal({
   onClose,
@@ -10,6 +10,8 @@ export default function AddItemModal({
   const [name, setName] = useState("");
   const [garmentUrl, setGarmentUrl] = useState("");
   const [tempButton, setTempButton] = useState("");
+  const [isValid, setIsValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState({});
 
   function handleNameChange(e) {
     setName(e.target.value);
@@ -31,8 +33,43 @@ export default function AddItemModal({
 
   function handleSubmit(e) {
     e.preventDefault();
-    onAddItemModalSubmit({ name, garmentUrl, tempButton }, resetForm);
+    if (isValid) {
+      onAddItemModalSubmit({ name, garmentUrl, tempButton }, resetForm);
+    }
   }
+
+  const handleValidation = (data) => {
+    const urlRegex = /^https?:\/\/\S+$/i;
+    const errors = {};
+
+    if (data.name.length < 3) {
+      errors.name = "Garment name must be larger than 3";
+    }
+
+    if (!urlRegex.test(data.garmentUrl)) {
+      errors.garmentUrl = "Garment link must be a valid URL";
+    }
+    if (data.tempButton === "") {
+      errors.tempButton = "Please select hot, warm or cold";
+    }
+
+    return Object.keys(errors).length === 0 ? true : errors;
+  };
+
+  useEffect(() => {
+    const isFormValid = handleValidation({
+      name,
+      garmentUrl,
+      tempButton
+    });
+    if (isFormValid === true) {
+      setIsValid(true);
+      setErrorMessage({});
+    } else {
+      setIsValid(false);
+      setErrorMessage(isFormValid);
+    }
+  }, [name, garmentUrl, tempButton]);
 
   return (
     <ModalWithForm
@@ -41,13 +78,16 @@ export default function AddItemModal({
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isValid={isValid}
     >
       <label htmlFor="add-garment-name-input" className="modal__label">
         Name{" "}
         <input
           id="add-garment-name-input"
           type="text"
-          className="modal__input"
+          className={`modal__input ${
+            errorMessage.name ? "modal__input_type_error" : ""
+          }`}
           name="name"
           placeholder="Name"
           required
@@ -55,13 +95,18 @@ export default function AddItemModal({
           onChange={handleNameChange}
           value={name}
         />
+        {errorMessage.name && (
+          <span className="modal__error">{errorMessage.name}</span>
+        )}
       </label>
       <label htmlFor="add-garment-link" className="modal__label">
         Image{" "}
         <input
           id="add-garment-link"
           type="url"
-          className="modal__input"
+          className={`modal__input ${
+            errorMessage.name ? "modal__input_type_error" : ""
+          }`}
           name="link"
           placeholder="Image URL"
           required
@@ -69,6 +114,9 @@ export default function AddItemModal({
           value={garmentUrl}
           onChange={handleImageUrlChange}
         />
+        {errorMessage.garmentUrl && (
+          <span className="modal__error">{errorMessage.garmentUrl}</span>
+        )}
       </label>
       <fieldset className="modal__radio-buttons">
         <legend className="modal__legend">Select the Weather type:</legend>
@@ -109,6 +157,9 @@ export default function AddItemModal({
           Cold
         </label>
       </fieldset>
+      {errorMessage.tempButton && (
+        <span className="modal__error">{errorMessage.tempButton}</span>
+      )}
     </ModalWithForm>
   );
 }
