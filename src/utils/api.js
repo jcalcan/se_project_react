@@ -24,7 +24,9 @@ export class JsonAPI {
 
   getItems() {
     return this._request(`${this._baseUrl}items`, { method: "GET" }).then(
-      (response) => response.data
+      (response) => {
+        return response.data;
+      }
     );
   }
 
@@ -32,10 +34,13 @@ export class JsonAPI {
     return this._request(`${this._baseUrl}items`, {
       method: "POST",
       headers: {
+        "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(data)
+    }).then((response) => {
+      return response;
     });
   }
 
@@ -62,7 +67,6 @@ export class JsonAPI {
   }
 
   createUser(data) {
-    // console.log("Creating user with data:", data);
     return this._request(`${this._baseUrl}signup`, {
       method: "POST",
       body: JSON.stringify(data)
@@ -80,7 +84,6 @@ export class JsonAPI {
   }
 
   authorize(data) {
-    // console.log("Authorizing with data:", data);
     return this._request(`${this._baseUrl}signin`, {
       method: "POST",
       headers: { Accept: "application/json" },

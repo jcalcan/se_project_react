@@ -7,34 +7,54 @@ export default function AddItemModal({
   isOpen,
   onAddItemModalSubmit
 }) {
-  const [name, setName] = useState("");
-  const [garmentUrl, setGarmentUrl] = useState("");
-  const [tempButton, setTempButton] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState({});
+  const [formFields, setFormFields] = useState({
+    name: "",
+    garmentUrl: "",
+    tempButton: ""
+  });
 
-  function handleNameChange(e) {
-    setName(e.target.value);
-  }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFields = {
+      ...formFields,
+      [name]: value
+    };
+    setFormFields(updatedFields);
 
-  function handleImageUrlChange(e) {
-    setGarmentUrl(e.target.value);
-  }
+    const isFormValid = handleValidation(updatedFields);
 
-  function handleTempButton(e) {
-    setTempButton(e.target.value);
-  }
+    if (isFormValid === true) {
+      setIsValid(true);
+      setErrorMessage({});
+    } else {
+      setIsValid(false);
+      setErrorMessage(isFormValid);
+    }
+  };
 
   function resetForm() {
-    setName("");
-    setGarmentUrl("");
-    setTempButton("");
+    setFormFields({
+      name: "",
+      garmentUrl: "",
+      tempButton: ""
+    });
+    setIsValid(false);
   }
 
   function handleSubmit(e) {
     e.preventDefault();
+
     if (isValid) {
-      onAddItemModalSubmit({ name, garmentUrl, tempButton }, resetForm);
+      onAddItemModalSubmit(
+        {
+          name: formFields.name,
+          garmentUrl: formFields.garmentUrl,
+          tempButton: formFields.tempButton
+        },
+        resetForm
+      );
     }
   }
 
@@ -55,21 +75,6 @@ export default function AddItemModal({
 
     return Object.keys(errors).length === 0 ? true : errors;
   };
-
-  useEffect(() => {
-    const isFormValid = handleValidation({
-      name,
-      garmentUrl,
-      tempButton
-    });
-    if (isFormValid === true) {
-      setIsValid(true);
-      setErrorMessage({});
-    } else {
-      setIsValid(false);
-      setErrorMessage(isFormValid);
-    }
-  }, [name, garmentUrl, tempButton]);
 
   return (
     <ModalWithForm
@@ -92,8 +97,8 @@ export default function AddItemModal({
           placeholder="Name"
           required
           size="52"
-          onChange={handleNameChange}
-          value={name}
+          onChange={handleChange}
+          value={formFields.name}
         />
         {errorMessage.name && (
           <span className="modal__error">{errorMessage.name}</span>
@@ -105,14 +110,14 @@ export default function AddItemModal({
           id="add-garment-link"
           type="url"
           className={`modal__input ${
-            errorMessage.name ? "modal__input_type_error" : ""
+            errorMessage.garmentUrl ? "modal__input_type_error" : ""
           }`}
-          name="link"
+          name="garmentUrl"
           placeholder="Image URL"
           required
           size="52"
-          value={garmentUrl}
-          onChange={handleImageUrlChange}
+          value={formFields.garmentUrl}
+          onChange={handleChange}
         />
         {errorMessage.garmentUrl && (
           <span className="modal__error">{errorMessage.garmentUrl}</span>
@@ -123,36 +128,36 @@ export default function AddItemModal({
         <label htmlFor="hot" className="modal__label modal__label_type_radio">
           <input
             id="hot"
-            name="climate"
+            name="tempButton"
             type="radio"
             className="modal__radio-input"
             value="hot"
-            onChange={handleTempButton}
-            checked={tempButton === "hot"}
+            onChange={handleChange}
+            checked={formFields.tempButton === "hot"}
           />{" "}
           Hot
         </label>
         <label htmlFor="warm" className="modal__label modal__label_type_radio">
           <input
             id="warm"
-            name="climate"
+            name="tempButton"
             type="radio"
             className="modal__radio-input"
             value="warm"
-            onChange={handleTempButton}
-            checked={tempButton === "warm"}
+            onChange={handleChange}
+            checked={formFields.tempButton === "warm"}
           />
           Warm
         </label>
         <label htmlFor="cold" className="modal__label modal__label_type_radio">
           <input
             id="cold"
-            name="climate"
+            name="tempButton"
             type="radio"
             className="modal__radio-input"
             value="cold"
-            onChange={handleTempButton}
-            checked={tempButton === "cold"}
+            onChange={handleChange}
+            checked={formFields.tempButton === "cold"}
           />
           Cold
         </label>

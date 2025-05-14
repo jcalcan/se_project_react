@@ -4,8 +4,8 @@
   margin: 0;
   position: relative;
   align-items: center;
-  width: 325px; /* add this */
-  min-width: 325px; /* add this */
+  width: 325px;
+  min-width: 325px;
 }
 .itemCard__title-heart-container {
   display: flex;

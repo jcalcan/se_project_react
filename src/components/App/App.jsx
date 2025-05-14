@@ -154,6 +154,7 @@ function App() {
     resetForm
   ) {
     const token = getToken();
+
     jsonServerApi
       .postItems(
         {
@@ -184,7 +185,6 @@ function App() {
         avatar
       })
       .then((response) => {
-        console.log(response);
         return jsonServerApi.authorize({ email, password });
       })
       .then((data) => {
