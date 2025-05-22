@@ -32,6 +32,17 @@ export default function RegisterModal({
     setTimeout(validateForm, 0);
   };
 
+  const handlePaste = (e) => {
+    const { name } = e.target;
+
+    const value = e.clipboardData.getData("text");
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+    setTimeout(validateForm, 0);
+  };
+
   const isValidEmail = (email) => {
     return email.includes("@") && email.includes(".");
   };
@@ -51,6 +62,10 @@ export default function RegisterModal({
 
   const validateForm = () => {
     let formIsValid = true;
+
+    if (!data.email || !data.password || !data.name || !data.avatar) {
+      formIsValid = false;
+    }
 
     if (!isValidEmail(data.email)) {
       setEmailError(true);
@@ -86,7 +101,10 @@ export default function RegisterModal({
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValid) {
-      handleRegistration(data);
+      handleRegistration(data).catch((error) => {
+        setServerError(error);
+        setIsValid(false);
+      });
     }
   };
 
