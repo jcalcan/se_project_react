@@ -11,6 +11,7 @@ export class JsonAPI {
   _request(endpoint, options = {}) {
     const finalOptions = {
       ...options,
+      credentials: "include",
       headers: {
         ...this._headers,
         ...(options.headers || {})
