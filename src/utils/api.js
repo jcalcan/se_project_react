@@ -8,17 +8,15 @@ export class JsonAPI {
       "Content-Type": "application/json"
     };
   }
+
   _request(endpoint, options = {}) {
     const finalOptions = {
       ...options,
-      credentials: "include",
       headers: {
         ...this._headers,
         ...(options.headers || {})
       }
     };
-    // console.log("Making request to:", endpoint);
-    // console.log("With options:", finalOptions);
 
     return fetch(endpoint, finalOptions).then(this._checkResponse);
   }

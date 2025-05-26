@@ -1,5 +1,6 @@
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import { useState, useEffect, useRef } from "react";
+
 import "./RegisterModal.css";
 
 export default function RegisterModal({
@@ -29,18 +30,14 @@ export default function RegisterModal({
       ...prevData,
       [name]: value
     }));
+    setServerError("");
     setTimeout(validateForm, 0);
   };
 
   const handlePaste = (e) => {
-    const { name } = e.target;
-
-    const value = e.clipboardData.getData("text");
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-    setTimeout(validateForm, 0);
+    setTimeout(() => {
+      handleChange(e);
+    }, 0);
   };
 
   const isValidEmail = (email) => {
@@ -160,6 +157,7 @@ export default function RegisterModal({
         placeholder="Email"
         required
         onChange={handleChange}
+        onPaste={handlePaste}
         value={data.email}
       />
 
@@ -175,6 +173,7 @@ export default function RegisterModal({
         value={data.password}
         required
         onChange={handleChange}
+        onPaste={handlePaste}
       />
       {passwordError && (
         <span className="modal__error">
@@ -194,6 +193,7 @@ export default function RegisterModal({
         required
         value={data.name}
         onChange={handleChange}
+        onPaste={handlePaste}
       />
       {nameError && (
         <span className="modal__error">Name must be at least 4 characters</span>
@@ -210,6 +210,7 @@ export default function RegisterModal({
         required
         value={data.avatar}
         onChange={handleChange}
+        onPaste={handlePaste}
       />
       {serverError && (
         <span className="modal__error modal__error_server">{serverError}</span>

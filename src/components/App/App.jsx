@@ -96,7 +96,6 @@ function App() {
   function handleCardClick(card) {
     setActiveModal("preview");
     setSelectedCard(card);
-    // console.log("Card data:", card);
   }
 
   function handleAddClick() {
@@ -173,7 +172,9 @@ function App() {
       .then(() => {
         resetForm();
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.error("Error details:", error);
+      });
   }
 
   function handleRegistration({ name, email, password, avatar }) {
@@ -184,7 +185,7 @@ function App() {
         password,
         avatar
       })
-      .then((response) => {
+      .then(() => {
         return jsonServerApi.authorize({ email, password });
       })
       .then((data) => {
@@ -229,7 +230,6 @@ function App() {
         }
       })
       .then((data) => {
-        // console.log("User Data:", data.data)
         setCurrentUser({
           username: data.data.name,
           email: data.data.email,
@@ -240,7 +240,7 @@ function App() {
 
         const redirectPath = location.state?.from?.pathname || "/";
         navigate(redirectPath);
-        // console.log("Login Successful!")
+
         closeActiveModal();
       })
       .catch((err) => {
@@ -264,7 +264,6 @@ function App() {
         return jsonServerApi.getUserInfo(token);
       })
       .then((data) => {
-        // console.log("User Data:", data.data);
         setCurrentUser({
           username: data.data.name,
           email: data.data.email,
