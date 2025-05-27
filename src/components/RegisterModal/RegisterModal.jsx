@@ -17,83 +17,58 @@ export default function RegisterModal({
     avatar: ""
   });
 
-  const [emailError, setEmailError] = useState(false);
-  const [nameError, setNameError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [avatarError, setAvatarError] = useState(false);
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    name: false,
+    avatar: false
+  });
+
+  const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState("");
   const [isValid, setIsValid] = useState(false);
 
-  const handleChange = (e) => {
+  const validators = {
+    email: (value) => value.includes("@") && value.includes("."),
+    password: (value) => value.length >= 6,
+    name: (value) => value.length > 3,
+    avatar: (value) => /^https?:\/\/\S+$/i.test(value)
+  };
+
+  const validateForm = (formData = data) => {
+    const newErrors = {};
+    if (!validators.email(formData.email)) newErrors.email = "Invalid email";
+    if (!validators.password(formData.password))
+      newErrors.password = "Password must be at least 6 characters";
+    if (!validators.name(formData.name))
+      newErrors.name = "Name must be at least 4 characters";
+    if (!validators.avatar(formData.avatar)) newErrors.avatar = "Invalid URL";
+    setErrors(newErrors);
+    setIsValid(
+      Object.keys(newErrors).length === 0 &&
+        Object.values(formData).every(Boolean)
+    );
+  };
+
+  const handleInput = (e) => {
     const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
+    const newData = { ...data, [name]: value };
+    setData(newData);
+    setTouched((prev) => ({ ...prev, [name]: true }));
     setServerError("");
-    setTimeout(validateForm, 0);
+    validateForm(newData);
   };
 
-  const handlePaste = (e) => {
-    setTimeout(() => {
-      handleChange(e);
-    }, 0);
-  };
-
-  const isValidEmail = (email) => {
-    return email.includes("@") && email.includes(".");
-  };
-
-  const isValidName = (name) => {
-    return name.length > 3;
-  };
-
-  const isValidPassword = (password) => {
-    return password.length >= 6;
-  };
-
-  const isValidURL = (avatar) => {
-    const urlRegex = /^https?:\/\/\S+$/i;
-    return urlRegex.test(avatar);
-  };
-
-  const validateForm = () => {
-    let formIsValid = true;
-
-    if (!data.email || !data.password || !data.name || !data.avatar) {
-      formIsValid = false;
+  useEffect(() => {
+    if (isOpen) {
+      setData({ email: "", password: "", name: "", avatar: "" });
+      setTouched({ email: false, password: false, name: false, avatar: false });
+      setErrors({});
+      setIsValid(false);
+      setServerError("");
+      emailInputRef.current?.focus();
     }
-
-    if (!isValidEmail(data.email)) {
-      setEmailError(true);
-      formIsValid = false;
-    } else {
-      setEmailError(false);
-    }
-
-    if (!isValidPassword(data.password)) {
-      setPasswordError(true);
-      formIsValid = false;
-    } else {
-      setPasswordError(false);
-    }
-
-    if (!isValidName(data.name)) {
-      setNameError(true);
-      formIsValid = false;
-    } else {
-      setNameError(false);
-    }
-
-    if (!isValidURL(data.avatar)) {
-      setAvatarError(true);
-      formIsValid = false;
-    } else {
-      setAvatarError(false);
-    }
-
-    setIsValid(formIsValid);
-  };
+  }, [isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -104,26 +79,6 @@ export default function RegisterModal({
       });
     }
   };
-
-  useEffect(() => {
-    validateForm();
-    if (isOpen) {
-      emailInputRef.current?.focus();
-      setData({
-        email: "",
-        password: "",
-        name: "",
-        avatar: ""
-      });
-
-      setIsValid(false);
-      setServerError("");
-      setEmailError(false);
-      setPasswordError(false);
-      setNameError(false);
-      setAvatarError(false);
-    }
-  }, [isOpen]);
 
   return (
     <ModalWithForm
@@ -152,12 +107,11 @@ export default function RegisterModal({
         ref={emailInputRef}
         id="signup-email-input"
         type="email"
-        className={`modal__input ${emailError ? "modal__input_error" : ""}`}
+        className={`modal__input ${errors.email ? "modal__input_error" : ""}`}
         name="email"
         placeholder="Email"
         required
-        onChange={handleChange}
-        onPaste={handlePaste}
+        onInput={handleInput}
         value={data.email}
       />
 
@@ -168,18 +122,16 @@ export default function RegisterModal({
         id="signup-password-input"
         name="password"
         type="password"
-        className={`modal__input ${passwordError ? "modal__input_error" : ""}`}
+        className={`modal__input ${
+          errors.password ? "modal__input_error" : ""
+        }`}
         placeholder="Password"
         value={data.password}
         required
-        onChange={handleChange}
-        onPaste={handlePaste}
+        onInput={handleInput}
       />
-      {passwordError && (
-        <span className="modal__error">
-          {" "}
-          Password must be at least 6 characters long
-        </span>
+      {touched.password && errors.password && (
+        <span className="modal__error">{errors.password}</span>
       )}
       <label htmlFor="signup-name-input" className="modal__label">
         Name*
@@ -188,15 +140,14 @@ export default function RegisterModal({
         id="signup-name-input"
         name="name"
         type="text"
-        className={`modal__input ${nameError ? "modal__input_error" : ""}`}
+        className={`modal__input ${errors.name ? "modal__input_error" : ""}`}
         placeholder="Name"
         required
         value={data.name}
-        onChange={handleChange}
-        onPaste={handlePaste}
+        onInput={handleInput}
       />
-      {nameError && (
-        <span className="modal__error">Name must be at least 4 characters</span>
+      {touched.name && errors.name && (
+        <span className="modal__error">{errors.name}</span>
       )}
       <label htmlFor="signup-avatar-input" className="modal__label">
         Avatar URL*
@@ -205,12 +156,11 @@ export default function RegisterModal({
         id="signup-avatar-input"
         name="avatar"
         type="url"
-        className={`modal__input ${avatarError ? "modal__input_error" : ""}`}
+        className={`modal__input ${errors.avatar ? "modal__input_error" : ""}`}
         placeholder="Avatar URL"
         required
         value={data.avatar}
-        onChange={handleChange}
-        onPaste={handlePaste}
+        onInput={handleInput}
       />
       {serverError && (
         <span className="modal__error modal__error_server">{serverError}</span>
